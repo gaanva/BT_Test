@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Devices list
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- 1) list of devices bonded-->  
+  <ion-item-group>
+    
+  </ion-item-group>
+  <!-- 2) list of devices discovered-->
+  <ion-item-group>
+    <ion-list>
+      <ion-item *ngFor="let d of devices">
+        <ion-label>{{d.name}}</ion-label>
+        <ion-label><h3>{{d.id}}</h3></ion-label>
+        <ion-label><h3>{{d.advertising}}</h3></ion-label>
+        <ion-label><h3>{{d.rssi}}</h3></ion-label>
+        <!-- ion-item-divider></ion-item-divider -->
+      </ion-item>
+    </ion-list>
+  </ion-item-group>
+</ion-content>
