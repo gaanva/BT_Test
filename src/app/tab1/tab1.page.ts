@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { BLE } from '@ionic-native/ble';
+import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
+import { Platform } from '@ionic/angular';
+
 
 
 
@@ -10,15 +12,25 @@ import { BLE } from '@ionic-native/ble';
 })
 export class Tab1Page {
   public devices:Array<any>;
-  constructor(private ble:BLE) {
-    console.log('Scanning for 10 seconds.');
-    this.scan(10);
+  constructor(private ble:BluetoothLE, public plt:Platform) {
+    this.plt.ready().then((readySource) => {
+
+      console.log('Platform ready from', readySource);
+   
+      this.ble.initialize().subscribe(ble => {
+        console.log('ble', ble.status) // logs 'enabled'
+        console.log('Scanning...');
+        this.scan();
+      });
+   
+     });
+    
   }
 
 
-  scan(seconds:number){
+  scan(){
     this.devices = [];
-    this.ble.scan([], seconds).subscribe(
+    this.ble.startScan({}).subscribe(
       device => {
         this.devices.push(device);
         console.log(JSON.stringify(device));
@@ -28,6 +40,15 @@ export class Tab1Page {
         console.log('Error while scanning!: '+JSON.stringify(error)); 
       }
     );
+    
+  }
+
+  stop(){
+    if(this.ble.isScanning){
+      this.ble.stopScan();
+    }else{
+      console.log('is not scanning.');
+    }
   }
 
   connect(deviceId){

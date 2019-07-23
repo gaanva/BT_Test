@@ -10,7 +10,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 //Bluetooth
-import { BLE } from '@ionic-native/ble';
+import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -19,7 +20,7 @@ import { BLE } from '@ionic-native/ble';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    BLE
+    BluetoothLE
   ],
   bootstrap: [AppComponent]
 })

@@ -7,20 +7,26 @@
 </ion-header>
 
 <ion-content>
+  <button ion-button icon-only (click) ="stop()"  >
+    Stop Scan
+  </button>
   <!-- 1) list of devices bonded-->  
   <ion-item-group>
-    
+
   </ion-item-group>
   <!-- 2) list of devices discovered-->
   <ion-item-group>
     <ion-list>
+      <!--VER COMO MOSTRAR BIEN LOS DATOS RECIBIDOS-->
       <ion-item *ngFor="let d of devices">
-        <ion-label>{{d.name}}</ion-label>
-        <ion-label><h3>{{d.id}}</h3></ion-label>
-        <ion-label><h3>{{d.advertising}}</h3></ion-label>
+        <ion-label>{{d.address}}</ion-label>
+        <ion-label><h3>{{d.name}}</h3></ion-label>
+        <ion-label><h3>{{d.advertisement}}</h3></ion-label>
         <ion-label><h3>{{d.rssi}}</h3></ion-label>
         <!-- ion-item-divider></ion-item-divider -->
       </ion-item>
     </ion-list>
   </ion-item-group>
+  
+  
 </ion-content>
