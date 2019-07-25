@@ -10,6 +10,7 @@
   <button ion-button icon-only (click) ="stop()"  >
     Stop Scan
   </button>
+  <h6>TOTAL DEVICES FOUND: {{devices.length}}</h6>
   <!-- 1) list of devices bonded-->  
   <ion-item-group>
 
@@ -29,16 +30,6 @@
           </ion-card-content>
         </ion-card>
 
-    <ion-list>
-      <!--VER COMO MOSTRAR BIEN LOS DATOS RECIBIDOS-->
-      <ion-item *ngFor="let d of devices">
-        <ion-label>{{d.address}}</ion-label>
-        <ion-label><h3>{{d.name}}</h3></ion-label>
-        <ion-label><h3>{{d.advertisement}}</h3></ion-label>
-        <ion-label><h3>{{d.rssi}}</h3></ion-label>
-        <!-- ion-item-divider></ion-item-divider -->
-      </ion-item>
-    </ion-list>
   </ion-item-group>
   
   

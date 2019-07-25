@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 import { Platform } from '@ionic/angular';
-
-
-
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-tab1',
@@ -12,11 +10,11 @@ import { Platform } from '@ionic/angular';
 })
 export class Tab1Page {
   public devices:Array<any>;
-  constructor(private ble:BluetoothLE, public plt:Platform) {
+  constructor(private ble:BluetoothLE, public plt:Platform, private changeRef: ChangeDetectorRef) {
     this.plt.ready().then((readySource) => {
 
       console.log('Platform ready from', readySource);
-   
+      this.stop();
       this.ble.initialize().subscribe(ble => {
         console.log('ble', ble.status) // logs 'enabled'
         console.log('Scanning...');
@@ -30,14 +28,28 @@ export class Tab1Page {
 
   scan(){
     this.devices = [];
+    let foundDevices = [];
     this.ble.startScan({}).subscribe(
       device => {
-        this.devices.push(device);
-        console.log(JSON.stringify(device));
+        if(device.status === "scanStarted"){
+          console.log("Scanning for devices (will continue to scan until you select a device)...", "status");
+        }else if(device.status === "scanResult"){
+          if (!foundDevices.some(function (foundDevice) {
+            return foundDevice.address === device.address;
+          })) {
+            foundDevices.push(device);
+            console.log("NEW BLUETOOTH LE FOUND!");
+            this.devices.push(device);
+            this.changeRef.detectChanges();
+            console.log(JSON.stringify(device));
+          }else{
+            console.log("***BLUETOOTH REPEATED");
+          }
+        }
       },
       error => { 
-        this.ble.stopScan();
         console.log('Error while scanning!: '+JSON.stringify(error)); 
+        this.stop();
       }
     );
     
