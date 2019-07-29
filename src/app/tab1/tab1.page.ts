@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 import { Platform } from '@ionic/angular';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { DataService } from '../services/data/data.service'; 
+import { Status } from '../enum/status.enum';
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -10,10 +11,11 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class Tab1Page {
   public devices:Array<any>;
-  constructor(private ble:BluetoothLE, public plt:Platform, private changeRef: ChangeDetectorRef) {
+  constructor(private ble:BluetoothLE, public plt:Platform, private changeRef: ChangeDetectorRef, private ds:DataService) {
     this.plt.ready().then((readySource) => {
 
       console.log('Platform ready from', readySource);
+      //previous check if the Bluetooth was scanning.
       this.stop();
       this.ble.initialize().subscribe(ble => {
         console.log('ble', ble.status) // logs 'enabled'
@@ -25,7 +27,6 @@ export class Tab1Page {
     
   }
 
-
   scan(){
     this.devices = [];
     let foundDevices = [];
@@ -33,6 +34,7 @@ export class Tab1Page {
       device => {
         if(device.status === "scanStarted"){
           console.log("Scanning for devices (will continue to scan until you select a device)...", "status");
+          this.ds.setStatus(Status.scanning);
         }else if(device.status === "scanResult"){
           if (!foundDevices.some(function (foundDevice) {
             return foundDevice.address === device.address;
@@ -63,13 +65,17 @@ export class Tab1Page {
     }
   }
 
-  connect(deviceId){
-    this.ble.connect(deviceId).subscribe(
+  connect(device){
+    this.ble.connect(device.id).subscribe(
       deviceConnected=>{
         console.log('Device connected: ' + deviceConnected);
+        this.ds.setStatus(Status.connected);
+        this.ds.setDevice(device);
       },
       connectionError=>{
+        //If a previous connection was successful, that connection will be still available...
         console.log('Connection error: ' + connectionError);
+        alert('Connection error: ' + connectionError);
       }
     );
   }

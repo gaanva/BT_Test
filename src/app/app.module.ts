@@ -11,16 +11,19 @@ import { AppComponent } from './app.component';
 
 //Bluetooth
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
+//Data Provider
+import { DataService } from './services/data/data.service';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, IonicModule.forRoot(),  AppRoutingModule],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    BluetoothLE
+    BluetoothLE,
+    DataService
   ],
   bootstrap: [AppComponent]
 })

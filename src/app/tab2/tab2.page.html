@@ -1,9 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab Two
+      Device Connection status
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+    <ion-button color="success" (click)='CheckDataReceivedFromTab1()'>Check Tab1 Data</ion-button>
+    {{testMessage}}
+</ion-content>
