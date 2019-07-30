@@ -14,6 +14,7 @@ import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 //Data Provider
 import { DataService } from './services/data/data.service';
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

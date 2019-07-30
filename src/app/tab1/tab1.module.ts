@@ -11,8 +11,12 @@ import { Tab1Page } from './tab1.page';
     IonicModule,
     CommonModule,
     FormsModule,
-    RouterModule.forChild([{ path: 'tab1', component: Tab1Page, outlet:'tab1' }])
+    RouterModule.forChild([{ path: '', component: Tab1Page }])
   ],
   declarations: [Tab1Page]
 })
-export class Tab1PageModule {}
+export class Tab1PageModule {
+  
+  constructor() { }
+
+}
