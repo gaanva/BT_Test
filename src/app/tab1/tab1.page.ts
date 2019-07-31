@@ -17,7 +17,7 @@ export class Tab1Page {
 
       console.log('Platform ready from', readySource);
       //previous check if the Bluetooth was scanning.
-      this.stop();
+      this.startScan();
       this.ble.initialize().subscribe(ble => {
         console.log('ble', ble.status) // logs 'enabled'
         console.log('Scanning...');
@@ -52,17 +52,20 @@ export class Tab1Page {
       },
       error => { 
         console.log('Error while scanning!: '+JSON.stringify(error)); 
-        this.stop();
+        this.startScan();
       }
     );
     
   }
 
-  stop(){
+  startScan(){
     if(this.ble.isScanning){
       this.ble.stopScan();
+      this.ds.setStatus(Status.disconnected);
     }else{
-      console.log('is not scanning.');
+      this.scan();
+      this.ds.setStatus(Status.scanning);
+      console.log('Scanning started again.');
     }
   }
 
