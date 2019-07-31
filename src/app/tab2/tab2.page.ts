@@ -10,7 +10,7 @@ import { Status } from '../enum/status.enum';
 })
 export class Tab2Page {
   
-  private testMessage:any;
+  private testMessage:String;
   
   constructor(private cd:ChangeDetectorRef, private ds:DataService) {
     console.log('Tab2 started!');
@@ -19,9 +19,9 @@ export class Tab2Page {
   //each time this page will be showed
   ionViewDidEnter(){
     if(this.ds.getStatus() === Status.connected){
-      this.testMessage = 'Reading data from Dataservice: ' + this.ds.getStatus();
+      this.testMessage = this.ds.getStatus();
     }else{
-      this.testMessage = 'Reading data from Dataservice: ' + this.ds.getStatus();
+      this.testMessage = this.ds.getStatus();
     }
     this.cd.detectChanges();
   }

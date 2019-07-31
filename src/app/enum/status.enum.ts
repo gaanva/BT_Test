@@ -1,5 +1,5 @@
 export enum Status {
-    scanning,
-    disconnected,
-    connected
+    scanning="SCANNING",
+    disconnected="DISCONNECTED",
+    connected="CONNECTED"
 }
