@@ -12,6 +12,7 @@ import { Status } from '../enum/status.enum';
 export class Tab1Page {
   public devices:Array<any>;
   constructor(private ble:BluetoothLE, public plt:Platform, private changeRef: ChangeDetectorRef, private ds:DataService) {
+    
     this.plt.ready().then((readySource) => {
 
       console.log('Platform ready from', readySource);
