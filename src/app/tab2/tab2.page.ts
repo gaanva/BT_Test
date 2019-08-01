@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { DataService } from '../services/data/data.service'; 
 import { Status } from '../enum/status.enum';
+import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 
 @Component({
   selector: 'app-tab2',
@@ -11,20 +12,43 @@ import { Status } from '../enum/status.enum';
 export class Tab2Page {
   
   private testMessage:String;
-  
-  constructor(private cd:ChangeDetectorRef, private ds:DataService) {
+  private deviceConnected:any;
+  constructor(
+    private cd:ChangeDetectorRef, 
+    private ds:DataService,
+    private ble:BluetoothLE
+  ) 
+  {
+    this.deviceConnected=ds.getDevice();
     console.log('Tab2 started!');
   }
 
   //each time this page will be showed
   ionViewDidEnter(){
-    if(this.ds.getStatus() === Status.connected){
-      this.testMessage = this.ds.getStatus();
+    this.testMessage = this.ds.getStatus();
+  }
+
+  deviceInfo(){
+    if(this.ble.isConnected){
+      if(this.ds.getDevice() !== null){
+        this.ble.discover({address:this.ds.getDevice().address, clearCache:true}).then(
+          data=>{ 
+                  console.log(data);
+                  this.ds.setDeviceInfo(data);
+                  this.updateView();
+                },
+          error=>console.log(error)
+        );
+      }else{
+        console.log('BLE status connected, but Data Service doesnt have a device object.');
+      }
     }else{
-      this.testMessage = this.ds.getStatus();
+      console.log('no device connected!');
     }
+  }
+
+  updateView(){
     this.cd.detectChanges();
   }
 
- 
 }

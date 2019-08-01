@@ -14,4 +14,13 @@ import { Tab3Page } from './tab3.page';
   ],
   declarations: [Tab3Page]
 })
-export class Tab3PageModule {}
+export class Tab3PageModule {
+
+  constructor(){
+    
+  }
+  
+  onOff(on:boolean){
+    //llamar a la característica/property de light del BT.
+  }
+}

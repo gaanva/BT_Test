@@ -7,6 +7,7 @@ import { Status } from '../../enum/status.enum';
 export class DataService {
   private connStatus:any;
   private device: any;
+  private deviceInfo: any;
   constructor() { 
     this.connStatus = Status.disconnected;
     console.log("Data provider created!");
@@ -24,8 +25,12 @@ export class DataService {
     return this.connStatus;
   }
 
-  public getDeviceInfo(){
+  public getDevice(){
     return this.device;
+  }
+
+  public setDeviceInfo(deviceInfo){
+    this.deviceInfo = deviceInfo; 
   }
 
 }

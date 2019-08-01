@@ -1,11 +1,27 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Device Connection status
+      Device Connection information
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
     {{testMessage}}
+    <ion-item-group>
+
+        <ion-card  *ngIf="deviceConnected">
+            <ion-card-header (click)="deviceInfo()">
+              <ion-card-subtitle>BT device</ion-card-subtitle>
+              <ion-card-title>{{deviceConnected.address}}</ion-card-title>
+            </ion-card-header>
+          
+            <ion-card-content>
+                <h3>{{deviceConnected.advertisement}}</h3>
+                <h3>{{deviceConnected.rssi}}</h3>
+            </ion-card-content>
+        </ion-card>
+  
+    </ion-item-group>
+
 </ion-content>

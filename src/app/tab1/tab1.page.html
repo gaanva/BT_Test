@@ -20,7 +20,7 @@
   <!-- 2) list of devices discovered-->
   <ion-item-group>
 
-      <ion-card *ngFor="let d of devices">
+      <ion-card (click)='connect(d)' *ngFor="let d of devices">
           <ion-card-header>
             <ion-card-subtitle>Bluetooth device detected</ion-card-subtitle>
             <ion-card-title>{{d.address}}</ion-card-title>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
-import { Platform } from '@ionic/angular';
+import { Platform, Events } from '@ionic/angular';
 import { ChangeDetectorRef } from '@angular/core';
 import { DataService } from '../services/data/data.service'; 
 import { Status } from '../enum/status.enum';
@@ -11,7 +11,13 @@ import { Status } from '../enum/status.enum';
 })
 export class Tab1Page {
   public devices:Array<any>;
-  constructor(private ble:BluetoothLE, public plt:Platform, private changeRef: ChangeDetectorRef, private ds:DataService) {
+  constructor(
+    public events: Events,
+    private ble:BluetoothLE, 
+    public plt:Platform, 
+    private changeRef: ChangeDetectorRef, 
+    private ds:DataService
+  ) {
     
     this.plt.ready().then((readySource) => {
 
@@ -70,15 +76,21 @@ export class Tab1Page {
   }
 
   connect(device){
-    this.ble.connect(device.id).subscribe(
+    this.ble.connect({address:device.address, autoConnect:true}).subscribe(
       deviceConnected=>{
-        console.log('Device connected: ' + deviceConnected);
+        console.log(deviceConnected);
         this.ds.setStatus(Status.connected);
         this.ds.setDevice(device);
+
+        /**TODO
+         * ir al TAB2 y mostrar la info del dispositivo conectado.
+         */
+        this.events.publish('tab:clicked',{tab:2});
+
       },
       connectionError=>{
         //If a previous connection was successful, that connection will be still available...
-        console.log('Connection error: ' + connectionError);
+        console.log(connectionError);
         alert('Connection error: ' + connectionError);
       }
     );
@@ -91,7 +103,12 @@ export class Tab1Page {
     );
   }
 
-  onOff(on:boolean){
-    //llamar a la característica/property de light del BT.
-  }
+  //execute discover command
+  /*deviceInfo(device){
+    console.log(device.address);
+    this.ble.discover({address:device.address, clearCache:true}).then(
+      ok=>console.log('device discovered info' + ok),
+      error=>console.log(error)
+    );
+  }*/
 }
