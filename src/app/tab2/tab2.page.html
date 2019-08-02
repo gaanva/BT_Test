@@ -8,8 +8,9 @@
 
 <ion-content>
     {{testMessage}}
+    <ion-img src="../../assets/icon/light_on.jpg">Ligth</ion-img>
     <ion-item-group>
-
+      
         <ion-card  *ngIf="deviceConnected">
             <ion-card-header (click)="deviceInfo()">
               <ion-card-subtitle>BT device</ion-card-subtitle>
