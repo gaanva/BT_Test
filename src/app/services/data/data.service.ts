@@ -8,6 +8,10 @@ export class DataService {
   private connStatus:any;
   private device: any;
   private deviceInfo: any;
+  
+  private SERVICE:any='0xFFE0';
+  private CHARACTERISTIC:any='0xFFE1';
+  
   constructor() { 
     this.connStatus = Status.disconnected;
     console.log("Data provider created!");
@@ -31,6 +35,14 @@ export class DataService {
 
   public setDeviceInfo(deviceInfo){
     this.deviceInfo = deviceInfo; 
+  }
+
+  public getService(){
+    return this.SERVICE;
+  }
+
+  public getCharacteristic(){
+    return this.CHARACTERISTIC;
   }
 
 }
