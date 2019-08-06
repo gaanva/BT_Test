@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
-import { DataService } from '../services/data/data.service'; 
-import { Status } from '../enum/status.enum';
+import { DataService } from '../services/data/data.service';
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 
 @Component({
@@ -10,9 +9,15 @@ import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-  
+  /**
+   * Depending on the device type (light, motor, camera, etc.) 
+   * Should be created a 'deviceConnected' class with its actions. 
+   */
   private testMessage:String;
   private deviceConnected:any;
+  //light status: on/off. true/false.
+  private light:any = false; 
+  
   constructor(
     private cd:ChangeDetectorRef, 
     private ds:DataService,
@@ -47,8 +52,30 @@ export class Tab2Page {
     }
   }
 
+
   updateView(){
     this.cd.detectChanges();
+  }
+
+  setOnOff(){
+    if(this.ble.isConnected){
+      this.ble.write({service:this.ds.getService(), 
+                      address:this.deviceConnected.address, 
+                      characteristic:this.ds.getCharacteristic(), 
+                      value:"B"})
+      .then(
+        ok => alert("information sent ok" + ok.toString()),
+        error => console.log("Error: " + error.toString())
+      );
+    }
+  }
+
+  stringToBytes(value){
+    return this.ble.stringToBytes(value);
+  }
+
+  bytesToString(value){
+    return this.ble.bytesToString
   }
 
 }

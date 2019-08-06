@@ -37,7 +37,8 @@ export class Tab1Page {
   scan(){
     this.devices = [];
     let foundDevices = [];
-    this.ble.startScan({}).subscribe( 
+    //this.ble.startScan({services:this.ds.getService()}).subscribe( 
+      this.ble.startScan({}).subscribe( 
       device => {
         if(device.status === "scanStarted"){
           console.log("Scanning for devices (will continue to scan until you select a device)...", "status");

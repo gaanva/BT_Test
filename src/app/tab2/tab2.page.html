@@ -1,17 +1,22 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      Device Connection information
+    <ion-title *ngIf="!deviceConnected">
+      Device Connected information
+    </ion-title>
+    <ion-title *ngIf="deviceConnected">
+        Connected to:
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
     {{testMessage}}
-    <ion-img src="../../assets/icon/light_on.jpg">Ligth</ion-img>
+    <ion-img *ngIf="light" src="../../assets/icon/light_on.jpg">Ligth</ion-img>
+    <ion-img *ngIf="!light" src="../../assets/icon/light_off.jpg">Ligth</ion-img>
     <ion-item-group>
       
         <ion-card  *ngIf="deviceConnected">
+        <!--ion-card-->
             <ion-card-header (click)="deviceInfo()">
               <ion-card-subtitle>BT device</ion-card-subtitle>
               <ion-card-title>{{deviceConnected.address}}</ion-card-title>
@@ -22,7 +27,12 @@
                 <h3>{{deviceConnected.rssi}}</h3>
             </ion-card-content>
         </ion-card>
-  
+        <ion-item color="primary">
+            <ion-label>Light</ion-label>
+            <ion-toggle (click)="setOnOff()" color="secondary" [(ngModel)]="light"></ion-toggle>
+          </ion-item>
     </ion-item-group>
+
+    
 
 </ion-content>

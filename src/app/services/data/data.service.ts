@@ -9,8 +9,8 @@ export class DataService {
   private device: any;
   private deviceInfo: any;
   
-  private SERVICE:any='0xFFE0';
-  private CHARACTERISTIC:any='0xFFE1';
+  private SERVICE:string='0xFFE0';
+  private CHARACTERISTIC:string='0xFFE1';
   
   constructor() { 
     this.connStatus = Status.disconnected;
