@@ -18,7 +18,7 @@
         <ion-card  *ngIf="deviceConnected">
         <!--ion-card-->
             <ion-card-header (click)="deviceInfo()">
-              <ion-card-subtitle>BT device</ion-card-subtitle>
+              <ion-card-subtitle>{{deviceConnected.name}}</ion-card-subtitle>
               <ion-card-title>{{deviceConnected.address}}</ion-card-title>
             </ion-card-header>
           
@@ -28,11 +28,13 @@
             </ion-card-content>
         </ion-card>
         <ion-item color="primary">
-            <ion-label>Light</ion-label>
+            <ion-label>Light</ion-label>  
             <ion-toggle (click)="setOnOff()" color="secondary" [(ngModel)]="light"></ion-toggle>
+            <ion-label>Device Info</ion-label>  
+            <ion-toggle (click)="deviceInfo()" color="warning"></ion-toggle>
+            <ion-label>Add SErvice</ion-label>  
+            <ion-toggle (click)="addService()" color="warning"></ion-toggle>
           </ion-item>
     </ion-item-group>
-
-    
 
 </ion-content>

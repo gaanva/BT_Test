@@ -8,13 +8,42 @@ export class DataService {
   private connStatus:any;
   private device: any;
   private deviceInfo: any;
+  private serviceDefinition:any;
   
-  private SERVICE:string='0xFFE0';
-  private CHARACTERISTIC:string='0xFFE1';
+  private SERVICE:string='FFE0';
+  private CHARACTERISTIC:string='FFE1';
   
   constructor() { 
     this.connStatus = Status.disconnected;
+    this.serviceDefinition = this.createService();
     console.log("Data provider created!");
+  }
+
+  private createService(){
+    this.serviceDefinition = {
+      service: this.SERVICE,
+      characteristics: [
+        {
+          uuid: "light",
+          permissions: {
+            read: true,
+            write: true,
+            //readEncryptionRequired: true,
+            //writeEncryptionRequired: true,
+          },
+          properties : {
+            read: true,
+            writeWithoutResponse: true,
+            write: true,
+            notify: true,
+            indicate: true,
+            //authenticatedSignedWrites: true,
+            //notifyEncryptionRequired: true,
+            //indicateEncryptionRequired: true,
+          }
+        }
+      ]
+    };
   }
 
   public setStatus(value){
@@ -44,5 +73,14 @@ export class DataService {
   public getCharacteristic(){
     return this.CHARACTERISTIC;
   }
+
+  public getServiceDefinition(){
+    if(!this.serviceDefinition){
+      this.createService();
+    }
+    return this.serviceDefinition;
+  }
+
+  
 
 }

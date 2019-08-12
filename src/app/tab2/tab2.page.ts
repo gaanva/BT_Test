@@ -35,7 +35,7 @@ export class Tab2Page {
 
   deviceInfo(){
     if(this.ble.isConnected){
-      if(this.ds.getDevice() !== null){
+      if(this.ds.getDevice()){
         this.ble.discover({address:this.ds.getDevice().address, clearCache:true}).then(
           data=>{ 
                   console.log(data);
@@ -60,14 +60,26 @@ export class Tab2Page {
   setOnOff(){
     if(this.ble.isConnected){
       this.ble.write({service:this.ds.getService(), 
-                      address:this.deviceConnected.address, 
+                      address:this.ds.getDevice().address, 
                       characteristic:this.ds.getCharacteristic(), 
-                      value:"B"})
+                      value:"algo"})
       .then(
         ok => alert("information sent ok" + ok.toString()),
-        error => console.log("Error: " + error.toString())
+        error => console.log(error)
       );
     }
+  }
+  
+  //Services and characteristic to HM-10
+  addService(){
+    if(this.ble.isConnected){
+      this.ble.addService(this.ds.getServiceDefinition()).then(
+        ok=> console.log(ok),
+        error=> console.log(error)
+      );
+    }else{
+      console.log('Bluetooth is not connected.');
+    } 
   }
 
   stringToBytes(value){

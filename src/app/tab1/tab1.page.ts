@@ -37,8 +37,8 @@ export class Tab1Page {
   scan(){
     this.devices = [];
     let foundDevices = [];
-    //this.ble.startScan({services:this.ds.getService()}).subscribe( 
-      this.ble.startScan({}).subscribe( 
+      this.ble.startScan({services:[this.ds.getService()]}).subscribe( 
+      //this.ble.startScan({}).subscribe( 
       device => {
         if(device.status === "scanStarted"){
           console.log("Scanning for devices (will continue to scan until you select a device)...", "status");
@@ -77,39 +77,64 @@ export class Tab1Page {
   }
 
   connect(device){
-    this.ble.connect({address:device.address, autoConnect:true}).subscribe(
-      deviceConnected=>{
-        console.log(deviceConnected);
-        this.ds.setStatus(Status.connected);
-        this.ds.setDevice(device);
+    //if(!this.ble.wasConnected){
+      this.ble.connect({address:device.address, autoConnect:true}).subscribe(
+        deviceConnected=>{
+          console.log(deviceConnected);
+          this.ds.setStatus(Status.connected);
+          this.ds.setDevice(deviceConnected);
+          /**TODO
+           * ir al TAB2 y mostrar la info del dispositivo conectado.
+           */
+          this.events.publish('tab:clicked',{tab:2});
 
-        /**TODO
-         * ir al TAB2 y mostrar la info del dispositivo conectado.
-         */
-        this.events.publish('tab:clicked',{tab:2});
+        },
+        connectionError=>{
+          //If a previous connection was successful, that connection will be still available...
+          console.log(connectionError);
+          alert(connectionError.error + ' -> ' + connectionError.message);
+        }
+      );
+    //}else{
+      //try to reconnect
+      /*
+      this.ble.reconnect({address:device.address}).subscribe(
+        ok=>{console.log('reconnect ok')},
+        error=>{
+                console.log(error);
+                this.ble.close({address:device.address}).then(
+                  ok=>console.log('closed!'),
+                  error=>console.log(error)
+                );
+              }
+      );
+        
+    }*/
+  }
 
-      },
-      connectionError=>{
-        //If a previous connection was successful, that connection will be still available...
-        console.log(connectionError);
-        alert('Connection error: ' + connectionError);
-      }
+  disconnect(d){
+    this.ble.disconnect({address:d.address}).then(
+      ok=>{alert(ok.toString())},
+      error=>{console.log(error.error + '->' + error.message)}
     );
   }
 
-  disconnect(deviceId){
-    this.ble.disconnect(deviceId).then(
-      ok=>{console.log('Disconnected: ' + ok)},
-      error=>{console.log('Some error: ' + error)}
-    );
-  }
-
-  //execute discover command
-  /*deviceInfo(device){
-    console.log(device.address);
-    this.ble.discover({address:device.address, clearCache:true}).then(
-      ok=>console.log('device discovered info' + ok),
+  //me tira error al intentar conectar al BT
+  close(d){
+    this.ble.close({address:d.address}).then(
+      ok=>console.log('closed!'),
       error=>console.log(error)
     );
-  }*/
+  }
+
+  reconnect(device){
+    this.ble.reconnect({address:device.address}).subscribe(
+      ok=>{console.log('reconnect ok')},
+      error=>{console.log(error)}
+    );
+    
+  }
+
+  
+  
 }
