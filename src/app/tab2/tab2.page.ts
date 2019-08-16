@@ -62,7 +62,8 @@ export class Tab2Page {
       this.ble.write({service:this.ds.getService(), 
                       address:this.ds.getDevice().address, 
                       characteristic:this.ds.getCharacteristic(), 
-                      value:"algo"})
+                      value:this.ble.bytesToEncodedString(this.ble.stringToBytes("B")),
+                      type: "noResponse"})
       .then(
         ok => alert("information sent ok" + ok.toString()),
         error => console.log(error)
