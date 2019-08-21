@@ -65,7 +65,16 @@ export class Tab1Page {
     
   }
 
+  activateBluetooth(){
+    if(!this.ble.isEnabled){
+      this.ble.enable();
+    }else{
+      console.log('Bluetooth is enabled!');
+    }
+  }
+
   startScan(){
+    this.activateBluetooth();
     if(this.ble.isScanning){
       this.ble.stopScan();
       this.ds.setStatus(Status.disconnected);
@@ -83,6 +92,7 @@ export class Tab1Page {
           console.log(deviceConnected);
           this.ds.setStatus(Status.connected);
           this.ds.setDevice(deviceConnected);
+          this.deviceInfo();
           /**TODO
            * ir al TAB2 y mostrar la info del dispositivo conectado.
            */
@@ -95,27 +105,12 @@ export class Tab1Page {
           alert(connectionError.error + ' -> ' + connectionError.message);
         }
       );
-    //}else{
-      //try to reconnect
-      /*
-      this.ble.reconnect({address:device.address}).subscribe(
-        ok=>{console.log('reconnect ok')},
-        error=>{
-                console.log(error);
-                this.ble.close({address:device.address}).then(
-                  ok=>console.log('closed!'),
-                  error=>console.log(error)
-                );
-              }
-      );
-        
-    }*/
   }
-
+  
   disconnect(d){
     this.ble.disconnect({address:d.address}).then(
       ok=>{alert(ok.toString())},
-      error=>{console.log(error.error + '->' + error.message)}
+      error=>{console.log(error)}
     );
   }
 
@@ -135,6 +130,15 @@ export class Tab1Page {
     
   }
 
+  deviceInfo(){
+    this.ble.discover({address:this.ds.getDevice().address, clearCache:true}).then(
+      data=>{ 
+              console.log(data);
+              this.ds.setDeviceInfo(data);
+            },
+      error=>console.log(error)
+    );
+  }
   
   
 }

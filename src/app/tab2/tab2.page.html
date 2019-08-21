@@ -11,8 +11,7 @@
 
 <ion-content>
     {{testMessage}}
-    <ion-img *ngIf="light" src="../../assets/icon/light_on.jpg">Ligth</ion-img>
-    <ion-img *ngIf="!light" src="../../assets/icon/light_off.jpg">Ligth</ion-img>
+    <ion-img src="../../assets/icon/light_on.jpg">Ligth</ion-img>
     <ion-item-group>
       
         <ion-card  *ngIf="deviceConnected">
@@ -31,9 +30,9 @@
             <ion-label>Light</ion-label>  
             <ion-toggle (click)="setOnOff()" color="secondary" [(ngModel)]="light"></ion-toggle>
             <ion-label>Device Info</ion-label>  
-            <ion-toggle (click)="deviceInfo()" color="warning"></ion-toggle>
+            <!-- ion-toggle (click)="deviceInfo()" color="warning"></ion-toggle>
             <ion-label>Add SErvice</ion-label>  
-            <ion-toggle (click)="addService()" color="warning"></ion-toggle>
+            <ion-toggle (click)="addService()" color="warning"></ion-toggle -->
           </ion-item>
     </ion-item-group>
 

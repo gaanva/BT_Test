@@ -33,54 +33,22 @@ export class Tab2Page {
     this.testMessage = this.ds.getStatus();
   }
 
-  deviceInfo(){
-    if(this.ble.isConnected){
-      if(this.ds.getDevice()){
-        this.ble.discover({address:this.ds.getDevice().address, clearCache:true}).then(
-          data=>{ 
-                  console.log(data);
-                  this.ds.setDeviceInfo(data);
-                  this.updateView();
-                },
-          error=>console.log(error)
-        );
-      }else{
-        console.log('BLE status connected, but Data Service doesnt have a device object.');
-      }
-    }else{
-      console.log('no device connected!');
-    }
-  }
-
-
   updateView(){
     this.cd.detectChanges();
   }
 
   setOnOff(){
-    if(this.ble.isConnected){
+    if(this.ble.isConnected && this.ble.isDiscovered){
       this.ble.write({service:this.ds.getService(), 
                       address:this.ds.getDevice().address, 
                       characteristic:this.ds.getCharacteristic(), 
-                      value:this.ble.bytesToEncodedString(this.ble.stringToBytes("B")),
-                      type: "noResponse"})
+                      value:this.ble.bytesToEncodedString(this.ble.stringToBytes("B"))/*,
+    type: "noResponse"*/  })
       .then(
         ok => alert("information sent ok" + ok.toString()),
         error => console.log(error)
       );
     }
-  }
-  
-  //Services and characteristic to HM-10
-  addService(){
-    if(this.ble.isConnected){
-      this.ble.addService(this.ds.getServiceDefinition()).then(
-        ok=> console.log(ok),
-        error=> console.log(error)
-      );
-    }else{
-      console.log('Bluetooth is not connected.');
-    } 
   }
 
   stringToBytes(value){
